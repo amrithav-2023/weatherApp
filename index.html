@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>helloweather</title>
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <!-- css -->
+    <link rel="stylesheet" href="./new.css">
+    <!-- fontawsome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- googlefont -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind&family=Lumanosimo&family=Montserrat&family=Quicksand&family=Roboto:ital,wght@1,500&family=Space+Grotesk:wght@300&family=Tektur:wght@400;500&display=swap" rel="stylesheet">
+<!-- favicon -->
+<link rel="icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/128/7477/7477790.png">
+</head>
+<body style="background-image: url(https://cdn.pixabay.com/photo/2018/09/03/23/56/sea-3652697_640.jpg); background-repeat: no-repeat; background-size: cover; " >
+    <div class="container" id="weather">
+
+        <div class="row mt-3">
+            <div class="col">
+                <h1 class="text-center" style="color:#222">helloWeather</h1>
+            </div>
+            <div class="d-flex align-items-center justify-content-center mt-5" id="srch">
+                <input type="text" placeholder="Enter city name" class="me-2" style="background: transparent;border: none;border-bottom: 1px solid #222; width:40%" id="input_city">
+                <button type="button" class="btn btn-primary btn-floating ms-2" style="background-color: #222; border-color:#222" onclick="search()">
+                    <i class="fas fa-search"></i>
+                  </button>
+            </div>
+        </div>
+
+        <div class="main-container d-flex justify-content-center align-items-center mt-5">
+            <div class="position-relative main__box" id="main-box">
+    
+                <div class="weather_01 bg-white shadow p-3" id="box1">
+                    <div class="row">
+                        <div class="col-md-6 col-6">
+                            <p class="mb-1">Country</p>
+                            <p class="mb-0">Nil</p>
+                        </div>
+                        <div class="col-md-6 col-6 text-end">
+                            <p class="mb-1">Wind</p>
+                            <p class="mb-0">0.0 Km/h</p>
+                        </div>  
+                    </div>
+                </div>
+    
+                <div class="weather_02 shadow p-3" id="box2">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 col-6">
+                            <div class="position-relative">
+                                <img src="https://cdn-icons-png.flaticon.com/128/10484/10484062.png" alt="sun-image" class="img-fluid">
+                                <img src="https://cdn-icons-png.flaticon.com/128/1163/1163624.png" alt="cloud image" class="cloud-img position-absolute end-0" width="70" height="70">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-6 text-end">
+                            <h2 class="mb-1">00 &deg; C</h2>
+                            <p class="mb-0">City</p>
+                        </div>
+                    </div>                       
+                </div>
+    
+                <div class="weather_03 bg-white shadow p-3" id="box3">
+                    <div class="row align-items-end h-100">
+                        <div class="col-md-6 col-6">
+                            <p class="mb-1">Humidity</p>
+                            <p class="mb-0">0.0 %</p>
+                        </div>
+                        <div class="col-md-6 col-6 text-end">
+                            <p class="mb-1">Pressure</p>
+                            <p class="mb-0">00</p>
+                        </div>  
+                    </div>
+                </div>
+    
+            </div>
+        </div>
+
+    </div>
+    
+</body>
+<script>
+    //function
+    function search(){
+        let cityname = input_city.value
+        //console.log(cityname);
+    //1)create object
+    const http = new XMLHttpRequest()
+    //2)open connection
+    http.open('get',`https://api.openweathermap.org/data/2.5/weather?q=${cityname}&appid=1010dc17fe1559a425389834190da5a0`)
+    //3)send request
+    http.send()
+    console.log(http.readyState);
+    //4)readystate
+    http.onreadystatechange = ()=>{
+        console.log(http.readyState);
+
+        if(http.readyState==4){
+            //console.log('data fetched')
+            if(http.status>=200 && http.status<300){
+                console.log(http.responseText);
+                //------------------------------
+
+                let data = JSON.parse(http.responseText)
+                console.log(data);
+
+                let city = data.name
+                console.log(city);
+                let country = data.sys.country
+                console.log(country);
+                let humidity = data.main.humidity
+                console.log(humidity);
+                let wind = data.wind.speed
+                console.log(wind)
+                let pressure = data.main.pressure
+                console.log(pressure);
+                let temperature = data.main.temp-273.15
+                console.log(temperature);
+
+                temp=parseFloat(temperature).toFixed(2);
+
+                srch.innerHTML=`
+                <input type="text" placeholder="Enter city name" class="" style="background: transparent;border: none;border-bottom: 1px solid #222; width:40%" id="input_city">
+                <button type="button" class="btn btn-primary btn-floating ms-2" style="background-color: #222; border-color:#222" onclick="search()">
+                    <i class="fas fa-search"></i>
+                  </button>
+                `
+
+                box1.innerHTML=`
+                <div class="row">
+                    <div class="col-md-6 col-6">
+                        <p class="mb-1">Country</p>
+                        <p class="mb-0">${country}</p>
+                    </div>
+                    <div class="col-md-6 col-6 text-end">
+                        <p class="mb-1">Wind</p>
+                        <p class="mb-0">${wind} km/h</p>
+                    </div>  
+                </div>
+                `
+                box2.innerHTML=`
+                <div class="row align-items-center">
+                    <div class="col-md-6 col-6">
+                        <div class="position-relative">
+                            <img src="https://cdn-icons-png.flaticon.com/128/146/146182.png" alt="sun-image" class="img-fluid" width="80" height="80">
+                            <img src="https://cdn-icons-png.flaticon.com/128/414/414927.png" alt="cloud image" class="cloud-img position-absolute end-0" width="70" height="70">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-6 text-end">
+                        <h2 class="mb-1">${temp} &deg; C</h2>
+                        <p class="mb-0">${city}</p>
+                    </div>
+                </div>
+                `
+                box3.innerHTML=`
+                <div class="row align-items-end h-100">
+                    <div class="col-md-6 col-6">
+                        <p class="mb-1">Humidity</p>
+                        <p class="mb-0">${humidity}%</p>
+                    </div>
+                    <div class="col-md-6 col-6 text-end">
+                        <p class="mb-1">Pressure</p>
+                        <p class="mb-0">${pressure}</p>
+                    </div>  
+                </div>
+                `
+            }
+        }
+
+    }
+
+}
+
+</script>
+</html>
